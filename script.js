@@ -1,3 +1,10 @@
+/*
+*TODO:
+*Stop from placing blocks when there is one in the way
+*Stop from placing blocks when part is out of the field --> fixed
+*Check full line
+*/
+
 //testing block
 $block = [[1, 0, 0], [1, 0, 0], [1, 1, 1]];
 //array that remembers where there are blocks
@@ -16,9 +23,10 @@ $('document').ready(function() {
 	$('div.block').mouseenter(function() {
 		//get the row and cell of the current div
 		$id = this.id.split("c");
-		$row = parseInt($id[0]);
-		$cell = parseInt($id[1]);
+		$row = (parseInt($id[0]) + $block.length) > $field.length ? $field.length - $block.length : (parseInt($id[0]));
+		$cell = (parseInt($id[1]) + $block[0].length) > $field[0].length ? $field[0].length - $block[0].length : (parseInt($id[1]));
 
+		console.log($row + '  -  ' + $cell);
 		//loop over each element in the array to see if there is a block there, if so, show a color
 		for($i = 0; $i < $block.length; $i++) {
 			for($j = 0; $j < $block.length; $j++) {
@@ -33,7 +41,7 @@ $('document').ready(function() {
 						$($target).addClass("red");
 					}
 					
-					console.log($target);
+					//console.log($target);
 				}
 			}	
 		}
@@ -43,8 +51,8 @@ $('document').ready(function() {
 	$('div.block').mouseleave(function() {
 		//get the row and cell of the current div
 		$id = this.id.split("c");
-		$row = parseInt($id[0]);
-		$cell = parseInt($id[1]);
+		$row = (parseInt($id[0]) + $block.length) > $field.length ? $field.length - $block.length : (parseInt($id[0]));
+		$cell = (parseInt($id[1]) + $block[0].length) > $field[0].length ? $field[0].length - $block[0].length : (parseInt($id[1]));
 		//loop over each element in the array and delete the colorclasses
 		for($i = 0; $i < $block.length; $i++) {
 			for($j = 0; $j < $block.length; $j++) {
