@@ -1,19 +1,30 @@
 div#canvas {
-	width:640px;
-	height: 640px;
+	width:560px;
+	height: 560px;
 	margin: 0 auto;
 	background-color: gray;
 	border: 2px black solid;
 	border-radius: 5px;
-	padding:5px;
+	padding:1px;
 }
 
 div.block {
-	background-color: white;
 	border: 2px black solid;
 	border-radius: 5px;
-	margin: 5px;
+	margin: 1px;
 	width: 50px;
 	height: 50px;
 	float: left;
+}
+
+.red {
+	background-color: red !important;
+}
+
+.green {
+	background-color: green !important;
+}
+
+.blue {
+	background-color: blue;
 }
