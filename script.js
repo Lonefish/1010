@@ -4,21 +4,34 @@
 *Stop from placing blocks when part is out of the field --> fixed
 *Check full line --> fixed
 *
-*Add multiple blocks at random
+*Add multiple blocks at random --> Fixed
 *Score system
 *Multiple colors
 *Change color via .css() instead of removing/adding classes
+*
+*BUGS:
+*Can't place the one block-block on the outside line, because if I take [1] as the array it won't see it as a block
+*Clicking probably doesn't check whether the block is going out of bounds
 */
 
 //testing block
 //$block = [[1, 0, 0], [1, 0, 0], [1, 1, 1]];
-$block = [[1, 1], [1, 1]];
-
+$blockArray = 	[	
+				[[1, 1], [1, 1]], 
+				[[1, 0], [1, 1]], 
+				[[1, 1], [1, 0]], 
+				[[0, 1], [1, 1]], 
+				[[1, 1], [0, 1]],
+				[[1, 0], [0, 0]],
+				];
+$block = [[1, 1], [0, 1]];
 //array that remembers where there are blocks
 $field = [[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0]];
 
 
 $('document').ready(function() {
+	//initialize first block
+	//$block = changeBlock();
 	//Make playfield
 	for($i = 0; $i < 10; $i++) {
 		for($j = 0; $j < 10; $j++) {
@@ -108,7 +121,7 @@ $('document').ready(function() {
 				}	
 			}
 		}
-
+		changeBlock();
 		checkFullLine();
 	});
 
@@ -153,4 +166,9 @@ function checkFullLine() {
 			}
 		}
 	}
+}
+
+function changeBlock() {
+	$block = $blockArray[Math.floor((Math.random() * $blockArray.length))];
+	console.log($block);
 }

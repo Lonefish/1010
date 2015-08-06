@@ -3,6 +3,11 @@
 *Stop from placing blocks when there is one in the way --> fixed
 *Stop from placing blocks when part is out of the field --> fixed
 *Check full line --> fixed
+*
+*Add multiple blocks at random
+*Score system
+*Multiple colors
+*Change color via .css() instead of removing/adding classes
 */
 
 //testing block
