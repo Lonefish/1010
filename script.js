@@ -4,19 +4,49 @@
 *Stop from placing blocks when part is out of the field --> fixed
 *Check full line --> fixed
 *
-*Add multiple blocks at random --> Fixed
+*Add multiple blocks at random --> Fixed and refixed with array containing separate hardcoded blocks
 *Score system
-*Multiple colors
+*Multiple colors -> change 1's in block arrays to a color
 *Change color via .css() instead of removing/adding classes
+*
 *
 *BUGS:
 *Can't place the one block-block on the outside line, because if I take [1] as the array it won't see it as a block
 *Clicking probably doesn't check whether the block is going out of bounds
+*Sometimes gets an error line 137 "cannot read  property '1' of undefined" => 	$target = 'div#' + $targetLocation[0]  + 'c' + $targetLocation[1];
+*some blocks stay green after placement, add update method to color all blocks accordingly
 */
 
-//testing block
-//$block = [[1, 0, 0], [1, 0, 0], [1, 1, 1]];
-$blockArray = 	[	
+//3*3 L shape
+$block11 = [[1, 0, 0], [1, 0, 0], [1, 1, 1]];
+$block12 = [[1, 1, 1], [0, 0, 1], [0, 0, 1]];
+$block13 = [[1, 1, 1], [1, 0, 0], [1, 0, 0]];
+$block14 = [[0, 0, 1], [0, 0, 1], [1, 1, 1]];
+
+//cubes
+$block21 = [[1]];
+$block22 = [[1, 1], [1, 1]];
+$block23 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
+
+//vertical lines
+$block31 = [[1], [1]];
+$block32 = [[1], [1], [1]];
+$block33 = [[1], [1], [1], [1]];
+$block34 = [[1], [1], [1], [1], [1]];
+
+//horizontal lines
+$block41 = [[1,1]];
+$block42 = [[1,1,1]];
+$block43 = [[1,1,1,1]];
+$block44 = [[1,1,1,1,1]];
+
+//2*2 L shape
+$block51 = [[0, 1], [1, 1]];
+$block52 = [[1, 0], [1, 1]];
+$block53 = [[1, 1], [0, 1]];
+$block54 = [[1, 1], [1, 0]];
+
+/*$blockArray = 	[	
 				[[1, 1], [1, 1]], 
 				[[1, 0], [1, 1]], 
 				[[1, 1], [1, 0]], 
@@ -24,7 +54,15 @@ $blockArray = 	[
 				[[1, 1], [0, 1]],
 				[[1, 0], [0, 0]],
 				];
-$block = [[1, 1], [0, 1]];
+$block = [[1]];*/
+
+//array with blocks 
+$blockArray = [	$block11, $block12, $block13, $block14, 
+				$block21, $block22, $block23, 
+				$block31, $block32, $block33, $block34, 
+				$block41, $block42, $block43, $block44,
+				$block51, $block52, $block53, $block54];
+$block = $block11;
 //array that remembers where there are blocks
 $field = [[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0]];
 
