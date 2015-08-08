@@ -6,15 +6,18 @@
 *
 *Add multiple blocks at random --> Fixed and refixed with array containing separate hardcoded blocks
 *Score system
-*Multiple colors -> change 1's in block arrays to a color
-*Change color via .css() instead of removing/adding classes
+*Multiple colors -> change 1's in block arrays to a color -> fixed
+*Change color via .css() instead of removing/adding classes -> fixed
+*Show 3 current blocks to choose from
 *
 *
 *BUGS:
 *Can't place the one block-block on the outside line, because if I take [1] as the array it won't see it as a block
+		=> update now seems to block the one block from the 5th line
+*vertical lines are tricky for some reason. They show up as cubes
 *Clicking probably doesn't check whether the block is going out of bounds
 *Sometimes gets an error line 137 "cannot read  property '1' of undefined" => 	$target = 'div#' + $targetLocation[0]  + 'c' + $targetLocation[1];
-*some blocks stay green after placement, add update method to color all blocks accordingly
+*some blocks stay green after placement, add update method to color all blocks accordingly -> should be fixed
 */
 
 //3*3 L shape
@@ -24,27 +27,27 @@ $block13 = [[1, 1, 1], [1, 0, 0], [1, 0, 0]];
 $block14 = [[0, 0, 1], [0, 0, 1], [1, 1, 1]];
 
 //cubes
-$block21 = [[1]];
-$block22 = [[1, 1], [1, 1]];
-$block23 = [[1, 1, 1], [1, 1, 1], [1, 1, 1]];
+$block21 = [[2]];
+$block22 = [[2, 2], [2, 2]];
+$block23 = [[2, 2, 2], [2, 2, 2], [2, 2, 2]];
 
 //vertical lines
-$block31 = [[1], [1]];
-$block32 = [[1], [1], [1]];
-$block33 = [[1], [1], [1], [1]];
-$block34 = [[1], [1], [1], [1], [1]];
+$block31 = [[3], [3]];
+$block32 = [[3], [3], [3]];
+$block33 = [[3], [3], [3], [3]];
+$block34 = [[3], [3], [3], [3], [3]];
 
 //horizontal lines
-$block41 = [[1,1]];
-$block42 = [[1,1,1]];
-$block43 = [[1,1,1,1]];
-$block44 = [[1,1,1,1,1]];
+$block41 = [[4,4]];
+$block42 = [[4,4,4]];
+$block43 = [[4,4,4,4]];
+$block44 = [[4,4,4,4,4]];
 
 //2*2 L shape
-$block51 = [[0, 1], [1, 1]];
-$block52 = [[1, 0], [1, 1]];
-$block53 = [[1, 1], [0, 1]];
-$block54 = [[1, 1], [1, 0]];
+$block51 = [[0, 5], [5, 5]];
+$block52 = [[5, 0], [5, 5]];
+$block53 = [[5, 5], [0, 5]];
+$block54 = [[5, 5], [5, 0]];
 
 /*$blockArray = 	[	
 				[[1, 1], [1, 1]], 
@@ -59,7 +62,7 @@ $block = [[1]];*/
 //array with blocks 
 $blockArray = [	$block11, $block12, $block13, $block14, 
 				$block21, $block22, $block23, 
-				$block31, $block32, $block33, $block34, 
+				/*$block31, $block32, $block33, $block34,*/ 
 				$block41, $block42, $block43, $block44,
 				$block51, $block52, $block53, $block54];
 $block = $block11;
@@ -88,15 +91,15 @@ $('document').ready(function() {
 		//loop over each element in the array to see if there is a block there, if so, show a color
 		for($i = 0; $i < $block.length; $i++) {
 			for($j = 0; $j < $block.length; $j++) {
-				if($block[$i][$j] == 1) {
+				if($block[$i][$j] != 0) {
 					$targetLocation = [($row + $i) , ($cell + $j) ];
 					$target = 'div#' + $targetLocation[0]  + 'c' + $targetLocation[1];
 					
 					//If there's already a block at the location, show green else show red
 					if($field[$targetLocation[0]][$targetLocation[1]] == 0) {
-						$($target).addClass("green");
+						$($target).css('background-color', 'green');
 					} else {
-						$($target).addClass("red");
+						$($target).css('background-color', 'red');
 					}
 				}
 			}	
@@ -112,15 +115,13 @@ $('document').ready(function() {
 		//loop over each element in the array and delete the colorclasses
 		for($i = 0; $i < $block.length; $i++) {
 			for($j = 0; $j < $block.length; $j++) {
-				if($block[$i][$j] == 1) {
+				if($block[$i][$j] != 0) {
 					$targetLocation = [($row + $i) , ($cell + $j) ];
 					$target = 'div#' + $targetLocation[0]  + 'c' + $targetLocation[1];
-					$($target).removeClass("green");
-					$($target).removeClass("red");
-
 				}
 			}	
 		}
+		updateColor();
 	});
 
 	//on click place the block on the field by adding the classes and saving it in the array
@@ -134,10 +135,10 @@ $('document').ready(function() {
 		//loop over each element in the array to see if there is a block there, if so , show a color and save it in the array
 		for($i = 0; $i < $block.length; $i++) {
 			for($j = 0; $j < $block.length; $j++) {
-				if($block[$i][$j] == 1) {
+				if($block[$i][$j] != 0) {
 					$targetLocation = [($row + $i) , ($cell + $j) ];
 					$target = 'div#' + $targetLocation[0]  + 'c' + $targetLocation[1];
-					if($field[$targetLocation[0]][$targetLocation[1]] == 1) {
+					if($field[$targetLocation[0]][$targetLocation[1]] != 0) {
 						$('p#error').text("Can't place that here!");
 						$spaceEmpty = false;
 					}
@@ -149,18 +150,19 @@ $('document').ready(function() {
 		if($spaceEmpty) {
 			for($i = 0; $i < $block.length; $i++) {
 				for($j = 0; $j < $block.length; $j++) {
-					if($block[$i][$j] == 1) {
+					if($block[$i][$j] != 0) {
 						$targetLocation = [($row + $i) , ($cell + $j) ];
 						$target = 'div#' + $targetLocation[0]  + 'c' + $targetLocation[1];
-						$($target).addClass("blue");
-						$field[$targetLocation[0]][$targetLocation[1]] = 1;						
+						//$($target).addClass("blue");
+						$field[$targetLocation[0]][$targetLocation[1]] = $block[$i][$j];						
 						console.log($target);
 					}
 				}	
 			}
+			changeBlock();
+			checkFullLine();
+			updateColor();
 		}
-		changeBlock();
-		checkFullLine();
 	});
 
 });
@@ -207,6 +209,48 @@ function checkFullLine() {
 }
 
 function changeBlock() {
-	$block = $blockArray[Math.floor((Math.random() * $blockArray.length))];
+	$random = Math.floor((Math.random() * $blockArray.length));
+	console.log($random);
+	$block = $blockArray[$random];
 	console.log($block);
+}
+
+function updateColor() {
+	console.log("UPDATE COLOR");
+	for($i = 0; $i < $field.length; $i++) {
+		for($j = 0; $j < $field.length; $j++) {
+			switch($field[$i][$j]) {
+				case 0:
+					$target = 'div#' + $i  + 'c' + $j;
+					$($target).css('background-color', 'gray');
+					//console.log($target);
+					break;
+				case 1:
+					$target = 'div#' + $i  + 'c' + $j;
+					$($target).css('background-color', 'purple');
+					//console.log($target);
+					break;
+				case 2: 
+					$target = 'div#' + $i  + 'c' + $j;
+					$($target).css('background-color', 'pink');
+					//console.log($target);
+					break;
+				case 3:
+					$target = 'div#' + $i  + 'c' + $j;
+					$($target).css('background-color', 'blue');
+					//console.log($target);
+					break;
+				case 4:
+					$target = 'div#' + $i  + 'c' + $j;
+					$($target).css('background-color', 'black');
+					//console.log($target);
+					break;
+				case 5:
+					$target = 'div#' + $i  + 'c' + $j;
+					$($target).css('background-color', 'white');
+					//console.log($target);
+					break;
+			}
+		}	
+	}
 }
