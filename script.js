@@ -5,11 +5,11 @@
 *Check full line --> fixed
 *
 *Add multiple blocks at random --> Fixed and refixed with array containing separate hardcoded blocks
-*Score system
+*Score system --> fixed
 *Multiple colors -> change 1's in block arrays to a color -> fixed
 *Change color via .css() instead of removing/adding classes -> fixed
 *Show 3 current blocks to choose from
-*
+*Checking when game is over, basic implementation, but still buggy
 *
 *BUGS:
 *Can't place the one block-block on the outside line, because if I take [1] as the array it won't see it as a block
@@ -71,6 +71,7 @@ $block = $block21;
 //array that remembers where there are blocks
 $field = [[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0]];
 
+var score = 0;
 
 $('document').ready(function() {
 	//initialize first block
@@ -152,6 +153,7 @@ $('document').ready(function() {
 			}	
 		}
 		if($spaceEmpty) {
+			var thisScore = 0;
 			for($i = 0; $i < $block.length; $i++) {
 				for($j = 0; $j < $block[0].length; $j++) {
 					if($block[$i][$j] != 0) {
@@ -160,16 +162,24 @@ $('document').ready(function() {
 						//$($target).addClass("blue");
 						$field[$targetLocation[0]][$targetLocation[1]] = $block[$i][$j];						
 						console.log($target);
+						thisScore++;
 					}
 				}	
 			}
 			changeBlock();
 			checkFullLine();
 			updateColor();
+			updateScore(thisScore);
+			checkIfBlockIsPossible();
 		}
 	});
 
 });
+
+function updateScore($number) {
+	score += parseInt($number);
+	$('p#score').html("Your score is : " + score);
+}
 
 function checkFullLine() {
 	//check horizontally
@@ -187,6 +197,7 @@ function checkFullLine() {
 				$div = 'div#' + $i + 'c' + $j;
 				$($div).removeClass("blue");
 				$field[$i][$j] = 0;
+				updateScore(10);
 			}
 		}
 	}
@@ -207,6 +218,7 @@ function checkFullLine() {
 				//$($div).effect('explode');
 				$($div).removeClass("blue");
 				$field[$j][$i] = 0;
+				updateScore(10);
 			}
 		}
 	}
@@ -257,4 +269,26 @@ function updateColor() {
 			}
 		}	
 	}
+}
+
+function checkIfBlockIsPossible() {
+	//check each possible placement
+	console.log("CHECKBLOCK");
+	for($i = 0; $i < $field.length - $block.length; $i++) {
+		for($j = 0; $j < $field[0].length - $block[0].length; $j++) {
+			$spaceEmpty = true;
+			for($iBlock = 0; $iBlock < $block.length; $iBlock++) {
+				for($jBlock = 0; $jBlock < $block[0].length; $jBlock++) {
+					if($block[$i][$j] != 0 && $field[$i + $jBlock][$j + $jBlock] != 0) {
+						$spaceEmpty = false;
+					}
+				}	
+			}
+			if($spaceEmpty) {
+				console.log("open spot at:" + $i + ' ' + $j);
+				return;
+			}
+		}	
+	}
+	alert("Game over! Your score is " + score);
 }
