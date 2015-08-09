@@ -14,9 +14,11 @@
 *BUGS:
 *Can't place the one block-block on the outside line, because if I take [1] as the array it won't see it as a block
 		=> update now seems to block the one block from the 5th line
-*vertical lines are tricky for some reason. They show up as cubes
-*Clicking probably doesn't check whether the block is going out of bounds
+		=> looks fixed
+*vertical lines are tricky for some reason. They show up as cubes => fixed
+*Clicking probably doesn't check whether the block is going out of bounds => fixed
 *Sometimes gets an error line 137 "cannot read  property '1' of undefined" => 	$target = 'div#' + $targetLocation[0]  + 'c' + $targetLocation[1];
+	=> looks fixed, haven't had the error in a while
 *some blocks stay green after placement, add update method to color all blocks accordingly -> should be fixed
 */
 
@@ -62,10 +64,10 @@ $block = [[1]];*/
 //array with blocks 
 $blockArray = [	$block11, $block12, $block13, $block14, 
 				$block21, $block22, $block23, 
-				/*$block31, $block32, $block33, $block34,*/ 
+				$block31, $block32, $block33, $block34,
 				$block41, $block42, $block43, $block44,
 				$block51, $block52, $block53, $block54];
-$block = $block11;
+$block = $block21;
 //array that remembers where there are blocks
 $field = [[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0]];
 
@@ -90,8 +92,9 @@ $('document').ready(function() {
 		console.log($row + '  -  ' + $cell);
 		//loop over each element in the array to see if there is a block there, if so, show a color
 		for($i = 0; $i < $block.length; $i++) {
-			for($j = 0; $j < $block.length; $j++) {
+			for($j = 0; $j < $block[0].length; $j++) {
 				if($block[$i][$j] != 0) {
+					console.log($i + ' ' +$j);
 					$targetLocation = [($row + $i) , ($cell + $j) ];
 					$target = 'div#' + $targetLocation[0]  + 'c' + $targetLocation[1];
 					
@@ -114,7 +117,7 @@ $('document').ready(function() {
 		$cell = (parseInt($id[1]) + $block[0].length) > $field[0].length ? $field[0].length - $block[0].length : (parseInt($id[1]));
 		//loop over each element in the array and delete the colorclasses
 		for($i = 0; $i < $block.length; $i++) {
-			for($j = 0; $j < $block.length; $j++) {
+			for($j = 0; $j < $block[0].length; $j++) {
 				if($block[$i][$j] != 0) {
 					$targetLocation = [($row + $i) , ($cell + $j) ];
 					$target = 'div#' + $targetLocation[0]  + 'c' + $targetLocation[1];
@@ -128,13 +131,14 @@ $('document').ready(function() {
 	$('div.block').click(function() {
 		//get the row and cell of the current div
 		$id = this.id.split("c");
-		$row = parseInt($id[0]);
-		$cell = parseInt($id[1]);
+		$row = (parseInt($id[0]) + $block.length) > $field.length ? $field.length - $block.length : (parseInt($id[0]));
+		$cell = (parseInt($id[1]) + $block[0].length) > $field[0].length ? $field[0].length - $block[0].length : (parseInt($id[1]));
+
 
 		$spaceEmpty = true;
 		//loop over each element in the array to see if there is a block there, if so , show a color and save it in the array
 		for($i = 0; $i < $block.length; $i++) {
-			for($j = 0; $j < $block.length; $j++) {
+			for($j = 0; $j < $block[0].length; $j++) {
 				if($block[$i][$j] != 0) {
 					$targetLocation = [($row + $i) , ($cell + $j) ];
 					$target = 'div#' + $targetLocation[0]  + 'c' + $targetLocation[1];
@@ -149,7 +153,7 @@ $('document').ready(function() {
 		}
 		if($spaceEmpty) {
 			for($i = 0; $i < $block.length; $i++) {
-				for($j = 0; $j < $block.length; $j++) {
+				for($j = 0; $j < $block[0].length; $j++) {
 					if($block[$i][$j] != 0) {
 						$targetLocation = [($row + $i) , ($cell + $j) ];
 						$target = 'div#' + $targetLocation[0]  + 'c' + $targetLocation[1];
@@ -218,7 +222,7 @@ function changeBlock() {
 function updateColor() {
 	console.log("UPDATE COLOR");
 	for($i = 0; $i < $field.length; $i++) {
-		for($j = 0; $j < $field.length; $j++) {
+		for($j = 0; $j < $field[0].length; $j++) {
 			switch($field[$i][$j]) {
 				case 0:
 					$target = 'div#' + $i  + 'c' + $j;
