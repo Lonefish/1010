@@ -2,7 +2,7 @@ div#canvas {
 	width:560px;
 	height: 560px;
 	margin: 0 auto;
-	background-color: gray;
+	background-color: #CFCFC4;
 	border: 2px black solid;
 	border-radius: 5px;
 	padding:1px;
@@ -18,11 +18,11 @@ div.block {
 }
 
 .red {
-	background-color: red !important;
+	background-color: #FF6961 !important;
 }
 
 .green {
-	background-color: green !important;
+	background-color: #77DD77 !important;
 }
 
 .blue {

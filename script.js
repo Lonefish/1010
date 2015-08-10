@@ -90,20 +90,20 @@ $('document').ready(function() {
 		$row = (parseInt($id[0]) + $block.length) > $field.length ? $field.length - $block.length : (parseInt($id[0]));
 		$cell = (parseInt($id[1]) + $block[0].length) > $field[0].length ? $field[0].length - $block[0].length : (parseInt($id[1]));
 
-		console.log($row + '  -  ' + $cell);
+		//console.log($row + '  -  ' + $cell);
 		//loop over each element in the array to see if there is a block there, if so, show a color
 		for($i = 0; $i < $block.length; $i++) {
 			for($j = 0; $j < $block[0].length; $j++) {
 				if($block[$i][$j] != 0) {
-					console.log($i + ' ' +$j);
+					//console.log($i + ' ' +$j);
 					$targetLocation = [($row + $i) , ($cell + $j) ];
 					$target = 'div#' + $targetLocation[0]  + 'c' + $targetLocation[1];
 					
 					//If there's already a block at the location, show green else show red
 					if($field[$targetLocation[0]][$targetLocation[1]] == 0) {
-						$($target).css('background-color', 'green');
+						$($target).css('background-color', '#77DD77');
 					} else {
-						$($target).css('background-color', 'red');
+						$($target).css('background-color', '#FF6961');
 					}
 				}
 			}	
@@ -148,7 +148,7 @@ $('document').ready(function() {
 						$spaceEmpty = false;
 					}
 					
-					console.log($target);
+					//console.log($target);
 				}
 			}	
 		}
@@ -161,7 +161,7 @@ $('document').ready(function() {
 						$target = 'div#' + $targetLocation[0]  + 'c' + $targetLocation[1];
 						//$($target).addClass("blue");
 						$field[$targetLocation[0]][$targetLocation[1]] = $block[$i][$j];						
-						console.log($target);
+						//console.log($target);
 						thisScore++;
 					}
 				}	
@@ -226,7 +226,7 @@ function checkFullLine() {
 
 function changeBlock() {
 	$random = Math.floor((Math.random() * $blockArray.length));
-	console.log($random);
+	//console.log($random);
 	$block = $blockArray[$random];
 	console.log($block);
 }
@@ -238,32 +238,32 @@ function updateColor() {
 			switch($field[$i][$j]) {
 				case 0:
 					$target = 'div#' + $i  + 'c' + $j;
-					$($target).css('background-color', 'gray');
+					$($target).css('background-color', '#CFCFC4');
 					//console.log($target);
 					break;
 				case 1:
 					$target = 'div#' + $i  + 'c' + $j;
-					$($target).css('background-color', 'purple');
+					$($target).css('background-color', '#FDFD96');
 					//console.log($target);
 					break;
 				case 2: 
 					$target = 'div#' + $i  + 'c' + $j;
-					$($target).css('background-color', 'pink');
+					$($target).css('background-color', '#FFD1DC');
 					//console.log($target);
 					break;
 				case 3:
 					$target = 'div#' + $i  + 'c' + $j;
-					$($target).css('background-color', 'blue');
+					$($target).css('background-color', '#779ECB');
 					//console.log($target);
 					break;
 				case 4:
 					$target = 'div#' + $i  + 'c' + $j;
-					$($target).css('background-color', 'black');
+					$($target).css('background-color', '#836953');
 					//console.log($target);
 					break;
 				case 5:
 					$target = 'div#' + $i  + 'c' + $j;
-					$($target).css('background-color', 'white');
+					$($target).css('background-color', '#FFB347');
 					//console.log($target);
 					break;
 			}
@@ -272,20 +272,32 @@ function updateColor() {
 }
 
 function checkIfBlockIsPossible() {
-	//check each possible placement
+	/*//check each possible placement
+	if($('#debug').prop('checked')) {
+		//console.log($i + $iBlock + ' ' + $j + $jBlock);
+		for($i = 0; $i < $field.length; $i++) {
+			console.log($field[$i]);
+		}
+
+		for($i = 0; $i < $block.length; $i++) {
+			console.log($block[$i]);
+		}
+	}*/
 	console.log("CHECKBLOCK");
-	for($i = 0; $i < $field.length - $block.length; $i++) {
-		for($j = 0; $j < $field[0].length - $block[0].length; $j++) {
+	for($i = 0; $i < $field.length - ($block.length-1); $i++) {
+		for($j = 0; $j < $field[0].length - ($block[0].length-1); $j++) {
 			$spaceEmpty = true;
 			for($iBlock = 0; $iBlock < $block.length; $iBlock++) {
 				for($jBlock = 0; $jBlock < $block[0].length; $jBlock++) {
-					if($block[$i][$j] != 0 && $field[$i + $jBlock][$j + $jBlock] != 0) {
-						$spaceEmpty = false;
+					if($block[$iBlock][$jBlock] != 0) {
+						if($field[parseInt($i) + parseInt($iBlock)][parseInt($j) + parseInt($jBlock)] != 0) {
+							$spaceEmpty = false;
+						}
 					}
 				}	
 			}
-			if($spaceEmpty) {
-				console.log("open spot at:" + $i + ' ' + $j);
+			if($spaceEmpty === true) {
+				console.log("open spot found at " + $i + " " + $j);
 				return;
 			}
 		}	
