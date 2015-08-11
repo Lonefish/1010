@@ -70,7 +70,7 @@ $blockArray = [	$block11, $block12, $block13, $block14,
 $block = $block21;
 
 //fixed atm
-$blockChoiceArray = [ $block11, $block21, $block31];
+$blockChoiceArray = [$block11, $block21, $block31];
 //array that remembers where there are blocks
 $field = [[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0]];
 
@@ -78,17 +78,56 @@ var score = 0;
 
 $('document').ready(function() {
 	//initialize first block
-	//$block = changeBlock();
+	changeBlock();
 	//Make playfield
 	for($i = 0; $i < 10; $i++) {
 		for($j = 0; $j < 10; $j++) {
 			$('div#canvas').append('<div class="block" id="' + $i + 'c' + $j + '"></div>');
 		}
 	}
-
-	for($i = 0; $i < 5; $i++) {
-		for($j = 0; $j < 15; $j++) {
-			$('div#blockfield').append('<div class="block2" id="' + $i + 'c' + $j + '"></div>');
+	//make field for the 3 blocks to choose from
+	for($k = 1; $k < 4; $k++) {
+		for($i = 0; $i < 5; $i++) {
+			for($j = 0; $j < 5; $j++) {
+				$('div#blockfield' + $k).append('<div class="blocks' + $k + '" id="choice' + $k + 'c' + $i + 'c' + $j + '"></div>');
+			}
+		}
+	}
+	//fill the field with 3 blocks
+	for($k = 0; $k < $blockChoiceArray.length; $k++) {
+		for($i = 0; $i < $blockChoiceArray[$k].length; $i++) {
+			for($j = 0; $j < $blockChoiceArray[$k][0].length; $j++) {
+				if($blockChoiceArray[$k][$i][$j] != 0) {
+					$target = 'div#choice' + (parseInt($k) + 1) + 'c' + $i  + 'c' + $j;
+					console.log($target);
+					switch($blockChoiceArray[$k][$i][$j]) {
+						case 0:
+							$($target).css('background-color', '#CFCFC4');
+							//console.log($target);
+							break;
+						case 1:
+							$($target).css('background-color', '#FDFD96');
+							//console.log($target);
+							break;
+						case 2: 
+							$($target).css('background-color', '#FFD1DC');
+							//console.log($target);
+							break;
+						case 3:
+							$($target).css('background-color', '#779ECB');
+							//console.log($target);
+							break;
+						case 4:
+							$($target).css('background-color', '#836953');
+							//console.log($target);
+							break;
+						case 5:
+							$($target).css('background-color', '#FFB347');
+							//console.log($target);
+							break;
+					}
+				}
+			}	
 		}
 	}
 

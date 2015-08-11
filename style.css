@@ -8,17 +8,24 @@ div#canvas {
 	padding:1px;
 }
 
-div#blockfield {
-	width:840px;
-	height: 275px;
-	margin: 0 auto;
-	background-color: #CFCFC4;
-	border: 2px black solid;
+div#blockfield1,div#blockfield2, div#blockfield3 {
+	/*background-color: red;*/
+
+	width:260px;
+	height: 260px;
+	margin: 5px;
 	border-radius: 5px;
 	padding:1px;
+	float: left;
 }
 
-div.block, div.block2 {
+div#choices {
+	width: 816px;
+	height: 260px;
+	margin: 0 auto;
+}
+
+div.block {
 	border: 2px black solid;
 	border-radius: 5px;
 	margin: 1px;
@@ -26,6 +33,14 @@ div.block, div.block2 {
 	height: 50px;
 	float: left;
 }
+
+div.blocks1, div.blocks2, div.blocks3 {
+	/*background-color: green;*/
+	border-radius: 5px;
+	margin: 1px;
+	width: 50px;
+	height: 50px;
+	float: left;
 
 .red {
 	background-color: #FF6961 !important;
