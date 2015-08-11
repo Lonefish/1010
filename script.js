@@ -68,6 +68,9 @@ $blockArray = [	$block11, $block12, $block13, $block14,
 				$block41, $block42, $block43, $block44,
 				$block51, $block52, $block53, $block54];
 $block = $block21;
+
+//fixed atm
+$blockChoiceArray = [ $block11, $block21, $block31];
 //array that remembers where there are blocks
 $field = [[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0]];
 
@@ -82,6 +85,13 @@ $('document').ready(function() {
 			$('div#canvas').append('<div class="block" id="' + $i + 'c' + $j + '"></div>');
 		}
 	}
+
+	for($i = 0; $i < 5; $i++) {
+		for($j = 0; $j < 15; $j++) {
+			$('div#blockfield').append('<div class="block2" id="' + $i + 'c' + $j + '"></div>');
+		}
+	}
+
 
 	//On mouse enter on a block div, show the block starting from the top-left part of the block
 	$('div.block').mouseenter(function() {
