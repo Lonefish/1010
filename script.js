@@ -93,45 +93,9 @@ $('document').ready(function() {
 			}
 		}
 	}
-	//fill the field with 3 blocks
-	for($k = 0; $k < $blockChoiceArray.length; $k++) {
-		for($i = 0; $i < $blockChoiceArray[$k].length; $i++) {
-			for($j = 0; $j < $blockChoiceArray[$k][0].length; $j++) {
-				if($blockChoiceArray[$k][$i][$j] != 0) {
-					$target = 'div#choice' + (parseInt($k) + 1) + 'c' + $i  + 'c' + $j;
-					console.log($target);
-					switch($blockChoiceArray[$k][$i][$j]) {
-						case 0:
-							$($target).css('background-color', '#CFCFC4');
-							//console.log($target);
-							break;
-						case 1:
-							$($target).css('background-color', '#FDFD96');
-							//console.log($target);
-							break;
-						case 2: 
-							$($target).css('background-color', '#FFD1DC');
-							//console.log($target);
-							break;
-						case 3:
-							$($target).css('background-color', '#779ECB');
-							//console.log($target);
-							break;
-						case 4:
-							$($target).css('background-color', '#836953');
-							//console.log($target);
-							break;
-						case 5:
-							$($target).css('background-color', '#FFB347');
-							//console.log($target);
-							break;
-					}
-				}
-			}	
-		}
-	}
 
-
+	updateChoices();
+	
 	//On mouse enter on a block div, show the block starting from the top-left part of the block
 	$('div.block').mouseenter(function() {
 		//get the row and cell of the current div
@@ -220,6 +184,7 @@ $('document').ready(function() {
 			updateColor();
 			updateScore(thisScore);
 			checkIfBlockIsPossible();
+			updateChoices();
 		}
 	});
 
@@ -277,6 +242,12 @@ function changeBlock() {
 	$random = Math.floor((Math.random() * $blockArray.length));
 	//console.log($random);
 	$block = $blockArray[$random];
+	
+	for($i = 0; $i < 3; $i++) {
+		$random = Math.floor((Math.random() * $blockArray.length));
+		$blockChoiceArray[$i] = $blockArray[$random];
+	}
+
 	console.log($block);
 }
 
@@ -353,3 +324,52 @@ function checkIfBlockIsPossible() {
 	}
 	alert("Game over! Your score is " + score);
 }
+
+function updateChoices() {
+	for($k = 1; $k < 4; $k++) {
+		for($i = 0; $i < 5; $i++) {
+			for($j = 0; $j < 5; $j++) {
+				$(('div#choice' + $k + 'c' + $i + 'c' + $j)).css('background-color', '#FFFFFF');
+			}
+		}
+	}
+
+	//fill the field with 3 blocks
+	for($k = 0; $k < $blockChoiceArray.length; $k++) {
+		for($i = 0; $i < $blockChoiceArray[$k].length; $i++) {
+			for($j = 0; $j < $blockChoiceArray[$k][0].length; $j++) {
+				if($blockChoiceArray[$k][$i][$j] != 0) {
+					$target = 'div#choice' + (parseInt($k) + 1) + 'c' + $i  + 'c' + $j;
+					console.log($target);
+					switch($blockChoiceArray[$k][$i][$j]) {
+						case 0:
+							$($target).css('background-color', '#CFCFC4');
+							//console.log($target);
+							break;
+						case 1:
+							$($target).css('background-color', '#FDFD96');
+							//console.log($target);
+							break;
+						case 2: 
+							$($target).css('background-color', '#FFD1DC');
+							//console.log($target);
+							break;
+						case 3:
+							$($target).css('background-color', '#779ECB');
+							//console.log($target);
+							break;
+						case 4:
+							$($target).css('background-color', '#836953');
+							//console.log($target);
+							break;
+						case 5:
+							$($target).css('background-color', '#FFB347');
+							//console.log($target);
+							break;
+					}
+				}
+			}	
+		}
+	}
+}
+
