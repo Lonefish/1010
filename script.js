@@ -185,6 +185,7 @@ $('document').ready(function() {
 			updateScore(thisScore);
 			checkIfBlockIsPossible();
 			updateChoices();
+			$('p#error').text("");
 		}
 	});
 
@@ -211,8 +212,8 @@ function checkFullLine() {
 				$div = 'div#' + $i + 'c' + $j;
 				$($div).removeClass("blue");
 				$field[$i][$j] = 0;
-				updateScore(10);
 			}
+			updateScore(10);
 		}
 	}
 
@@ -232,8 +233,8 @@ function checkFullLine() {
 				//$($div).effect('explode');
 				$($div).removeClass("blue");
 				$field[$j][$i] = 0;
-				updateScore(10);
 			}
+			updateScore(10);
 		}
 	}
 }
