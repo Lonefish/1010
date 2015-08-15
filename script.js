@@ -67,10 +67,11 @@ $blockArray = [	$block11, $block12, $block13, $block14,
 				$block31, $block32, $block33, $block34,
 				$block41, $block42, $block43, $block44,
 				$block51, $block52, $block53, $block54];
-$block = $block21;
+$block = null;
+$blockNumber = 0;
 
 //fixed atm
-$blockChoiceArray = [$block11, $block21, $block31];
+$blockChoiceArray = [null, null, null];
 //array that remembers where there are blocks
 $field = [[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0],[0,0,0,0,0, 0,0,0,0,0]];
 
@@ -98,6 +99,9 @@ $('document').ready(function() {
 	
 	//On mouse enter on a block div, show the block starting from the top-left part of the block
 	$('div.block').mouseenter(function() {
+		if($block === null) {
+			return;
+		}
 		//get the row and cell of the current div
 		$id = this.id.split("c");
 		$row = (parseInt($id[0]) + $block.length) > $field.length ? $field.length - $block.length : (parseInt($id[0]));
@@ -125,6 +129,9 @@ $('document').ready(function() {
 
 	//on mouseleave do the exact opposite of mouseenter
 	$('div.block').mouseleave(function() {
+		if($block === null) {
+			return;
+		}
 		//get the row and cell of the current div
 		$id = this.id.split("c");
 		$row = (parseInt($id[0]) + $block.length) > $field.length ? $field.length - $block.length : (parseInt($id[0]));
@@ -143,6 +150,9 @@ $('document').ready(function() {
 
 	//on click place the block on the field by adding the classes and saving it in the array
 	$('div.block').click(function() {
+		if($block === null) {
+			return;
+		}
 		//get the row and cell of the current div
 		$id = this.id.split("c");
 		$row = (parseInt($id[0]) + $block.length) > $field.length ? $field.length - $block.length : (parseInt($id[0]));
@@ -179,14 +189,35 @@ $('document').ready(function() {
 					}
 				}	
 			}
-			changeBlock();
 			checkFullLine();
 			updateColor();
 			updateScore(thisScore);
 			checkIfBlockIsPossible();
+
+			$block = null;
+			$blockChoiceArray[$blockNumber] = null;
+			$blockNumber = null;
+
+			changeBlock();
 			updateChoices();
 			$('p#error').text("");
 		}
+	});
+
+	$('div#blockfield1').click(function() {
+		$block = $blockChoiceArray[0];
+		$blockNumber = 0;
+		updateChoices();
+	});
+	$('div#blockfield2').click(function() {
+		$block = $blockChoiceArray[1];
+		$blockNumber = 1;
+		updateChoices();
+	});
+	$('div#blockfield3').click(function() {
+		$block = $blockChoiceArray[2];
+		$blockNumber = 2;
+		updateChoices();
 	});
 
 });
@@ -240,16 +271,21 @@ function checkFullLine() {
 }
 
 function changeBlock() {
-	$random = Math.floor((Math.random() * $blockArray.length));
+	//$random = Math.floor((Math.random() * $blockArray.length));
 	//console.log($random);
-	$block = $blockArray[$random];
-	
-	for($i = 0; $i < 3; $i++) {
-		$random = Math.floor((Math.random() * $blockArray.length));
-		$blockChoiceArray[$i] = $blockArray[$random];
-	}
+	//$block = $blockArray[$random];
 
-	console.log($block);
+	if($blockChoiceArray[0] == null && $blockChoiceArray[1] == null && $blockChoiceArray[2] == null) {
+		for($i = 0; $i < 3; $i++) {
+			$random = Math.floor((Math.random() * $blockArray.length));
+			$blockChoiceArray[$i] = $blockArray[$random];
+		}
+		updateChoices();
+	}
+	
+
+
+	console.log("CHANGEBLOCK");
 }
 
 function updateColor() {
@@ -331,17 +367,22 @@ function updateChoices() {
 		for($i = 0; $i < 5; $i++) {
 			for($j = 0; $j < 5; $j++) {
 				$(('div#choice' + $k + 'c' + $i + 'c' + $j)).css('background-color', '#FFFFFF');
+				$(('div#choice' + $k + 'c' + $i + 'c' + $j)).css('box-shadow', '');
 			}
 		}
 	}
 
 	//fill the field with 3 blocks
 	for($k = 0; $k < $blockChoiceArray.length; $k++) {
+		if($blockChoiceArray[$k] === null) {
+			continue;
+		}
+		console.log($blockNumber);
 		for($i = 0; $i < $blockChoiceArray[$k].length; $i++) {
 			for($j = 0; $j < $blockChoiceArray[$k][0].length; $j++) {
 				if($blockChoiceArray[$k][$i][$j] != 0) {
 					$target = 'div#choice' + (parseInt($k) + 1) + 'c' + $i  + 'c' + $j;
-					console.log($target);
+					//console.log($target);
 					switch($blockChoiceArray[$k][$i][$j]) {
 						case 0:
 							$($target).css('background-color', '#CFCFC4');
@@ -367,6 +408,9 @@ function updateChoices() {
 							$($target).css('background-color', '#FFB347');
 							//console.log($target);
 							break;
+					}
+					if($k === $blockNumber) {
+						$($target).css('box-shadow', 'inset 0 0 10px #000000');
 					}
 				}
 			}	
