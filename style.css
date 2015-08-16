@@ -27,7 +27,8 @@ h1 {
 div#canvas {
 	width: 520px;
 	height: 520px;
-	margin: 0 auto;
+	float:left;
+	/*margin: 0 auto;*/
 	/*background-color: #CFCFC4;*/
 	/*border: 2px black solid;*/
 	border-radius: 5px;
@@ -44,10 +45,15 @@ div#blockfield1,div#blockfield2, div#blockfield3 {
 	float: left;
 }
 
-div#choices {
-	width: 816px;
-	height: 260px;
+div#cont {
+	width: 800px;
 	margin: 0 auto;
+}
+
+div#choices {
+	width: 270px;
+	height: 860px;
+	float: left;
 }
 
 div.block {
@@ -79,4 +85,3 @@ div.blocks1, div.blocks2, div.blocks3 {
 
 .blue {
 	background-color: blue;
-}

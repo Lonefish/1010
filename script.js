@@ -280,7 +280,10 @@ function changeBlock() {
 			$random = Math.floor((Math.random() * $blockArray.length));
 			$blockChoiceArray[$i] = $blockArray[$random];
 		}
+		$block = $blockChoiceArray[0];
+		$blockNumber = 0;
 		updateChoices();
+
 	}
 	
 
@@ -329,35 +332,30 @@ function updateColor() {
 }
 
 function checkIfBlockIsPossible() {
-	/*//check each possible placement
-	if($('#debug').prop('checked')) {
-		//console.log($i + $iBlock + ' ' + $j + $jBlock);
-		for($i = 0; $i < $field.length; $i++) {
-			console.log($field[$i]);
-		}
-
-		for($i = 0; $i < $block.length; $i++) {
-			console.log($block[$i]);
-		}
-	}*/
 	console.log("CHECKBLOCK");
-	for($i = 0; $i < $field.length - ($block.length-1); $i++) {
-		for($j = 0; $j < $field[0].length - ($block[0].length-1); $j++) {
-			$spaceEmpty = true;
-			for($iBlock = 0; $iBlock < $block.length; $iBlock++) {
-				for($jBlock = 0; $jBlock < $block[0].length; $jBlock++) {
-					if($block[$iBlock][$jBlock] != 0) {
-						if($field[parseInt($i) + parseInt($iBlock)][parseInt($j) + parseInt($jBlock)] != 0) {
-							$spaceEmpty = false;
+	for($k = 0; $k < $blockChoiceArray.length; $k++) {
+		if($blockChoiceArray[$k] === null) {
+			continue;
+		}
+		for($i = 0; $i < $field.length - ($block.length-1); $i++) {
+			for($j = 0; $j < $field[0].length - ($block[0].length-1); $j++) {
+				$spaceEmpty = true;
+				for($iBlock = 0; $iBlock < $block.length; $iBlock++) {
+					for($jBlock = 0; $jBlock < $block[0].length; $jBlock++) {
+						if($block[$iBlock][$jBlock] != 0) {
+							if($field[parseInt($i) + parseInt($iBlock)][parseInt($j) + parseInt($jBlock)] != 0) {
+								$spaceEmpty = false;
+							}
 						}
-					}
-				}	
-			}
-			if($spaceEmpty === true) {
-				console.log("open spot found at " + $i + " " + $j);
-				return;
-			}
-		}	
+					}	
+				}
+				if($spaceEmpty === true) {
+					console.log("open spot found at " + $i + " " + $j);
+					return;
+				}
+			}	
+		}
+		console.log($k);
 	}
 	alert("Game over! Your score is " + score);
 }
@@ -377,7 +375,7 @@ function updateChoices() {
 		if($blockChoiceArray[$k] === null) {
 			continue;
 		}
-		console.log($blockNumber);
+		//console.log($blockNumber);
 		for($i = 0; $i < $blockChoiceArray[$k].length; $i++) {
 			for($j = 0; $j < $blockChoiceArray[$k][0].length; $j++) {
 				if($blockChoiceArray[$k][$i][$j] != 0) {
