@@ -192,7 +192,6 @@ $('document').ready(function() {
 			checkFullLine();
 			updateColor();
 			updateScore(thisScore);
-			checkIfBlockIsPossible();
 
 			$block = null;
 			$blockChoiceArray[$blockNumber] = null;
@@ -200,6 +199,7 @@ $('document').ready(function() {
 
 			changeBlock();
 			updateChoices();
+			checkIfBlockIsPossible();
 			$('p#error').text("");
 		}
 	});
@@ -337,12 +337,12 @@ function checkIfBlockIsPossible() {
 		if($blockChoiceArray[$k] === null) {
 			continue;
 		}
-		for($i = 0; $i < $field.length - ($block.length-1); $i++) {
-			for($j = 0; $j < $field[0].length - ($block[0].length-1); $j++) {
+		for($i = 0; $i < $field.length - ($blockChoiceArray[$k].length-1); $i++) {
+			for($j = 0; $j < $field[0].length - ($blockChoiceArray[$k][0].length-1); $j++) {
 				$spaceEmpty = true;
-				for($iBlock = 0; $iBlock < $block.length; $iBlock++) {
-					for($jBlock = 0; $jBlock < $block[0].length; $jBlock++) {
-						if($block[$iBlock][$jBlock] != 0) {
+				for($iBlock = 0; $iBlock < $blockChoiceArray[$k].length; $iBlock++) {
+					for($jBlock = 0; $jBlock < $blockChoiceArray[$k][0].length; $jBlock++) {
+						if($blockChoiceArray[$k][$iBlock][$jBlock] != 0) {
 							if($field[parseInt($i) + parseInt($iBlock)][parseInt($j) + parseInt($jBlock)] != 0) {
 								$spaceEmpty = false;
 							}
@@ -362,6 +362,9 @@ function checkIfBlockIsPossible() {
 
 function updateChoices() {
 	for($k = 1; $k < 4; $k++) {
+		if($blockChoiceArray[$k] === null) {
+			continue;
+		}
 		for($i = 0; $i < 5; $i++) {
 			for($j = 0; $j < 5; $j++) {
 				$(('div#choice' + $k + 'c' + $i + 'c' + $j)).css('background-color', '#FFFFFF');
@@ -407,6 +410,7 @@ function updateChoices() {
 							//console.log($target);
 							break;
 					}
+
 					if($k === $blockNumber) {
 						$($target).css('box-shadow', 'inset 0 0 10px #000000');
 					}
