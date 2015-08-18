@@ -68,7 +68,7 @@ $blockArray = [	$block11, $block12, $block13, $block14,
 				$block41, $block42, $block43, $block44,
 				$block51, $block52, $block53, $block54];
 $block = null;
-$blockNumber = 0;
+$blockNumber = 4;
 
 //fixed atm
 $blockChoiceArray = [null, null, null];
@@ -195,7 +195,7 @@ $('document').ready(function() {
 
 			$block = null;
 			$blockChoiceArray[$blockNumber] = null;
-			$blockNumber = null;
+			$blockNumber = 4;
 
 			changeBlock();
 			updateChoices();
@@ -280,8 +280,8 @@ function changeBlock() {
 			$random = Math.floor((Math.random() * $blockArray.length));
 			$blockChoiceArray[$i] = $blockArray[$random];
 		}
-		$block = $blockChoiceArray[0];
-		$blockNumber = 0;
+		$block = null;
+		$blockNumber = 4;
 		updateChoices();
 
 	}
