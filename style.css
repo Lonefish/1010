@@ -6,7 +6,7 @@ body {
 	font-family: 'LeagueGothic-Regular';
 }
 
-p#score, p#error {
+p#score, p#error, p#highscore {
 	text-align: center;
 	font-size: 20px;
 }

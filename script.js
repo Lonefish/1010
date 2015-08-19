@@ -79,7 +79,9 @@ var score = 0;
 
 $('document').ready(function() {
 	//initialize first block
+	createCookie("highscore", "1234", 2);
 	changeBlock();
+	updateHighscore();
 	//Make playfield
 	for($i = 0; $i < 10; $i++) {
 		for($j = 0; $j < 10; $j++) {
@@ -222,9 +224,15 @@ $('document').ready(function() {
 
 });
 
+function updateHighscore() {
+	var highscore = readCookie("highscore");
+	$('p#highscore').html("Your highscore is : " + highscore);
+}
+
 function updateScore($number) {
 	score += parseInt($number);
 	$('p#score').html("Your score is : " + score);
+	updateHighscore();
 }
 
 function checkFullLine() {
@@ -285,9 +293,6 @@ function changeBlock() {
 		updateChoices();
 
 	}
-	
-
-
 	console.log("CHANGEBLOCK");
 }
 
@@ -357,6 +362,7 @@ function checkIfBlockIsPossible() {
 		}
 		console.log($k);
 	}
+	createCookie("highscore", score, 365);
 	alert("Game over! Your score is " + score);
 }
 
@@ -419,4 +425,27 @@ function updateChoices() {
 		}
 	}
 }
+
+function createCookie(name,value,days) {
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
+	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires+"; path=/";
+}
+
+function readCookie(name) {
+	var nameEQ = name + "=";
+	var ca = document.cookie.split(';');
+	for(var i=0;i < ca.length;i++) {
+		var c = ca[i];
+		while (c.charAt(0)==' ') c = c.substring(1,c.length);
+		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+	}
+	return null;
+}
+
+
 
